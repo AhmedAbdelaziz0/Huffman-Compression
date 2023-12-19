@@ -1,0 +1,11 @@
+#!/bin/bash
+
+cd ./build || exit
+cmake ..
+make -j
+cd .. || exit
+echo "
+****************************************************
+"
+
+./build/main
