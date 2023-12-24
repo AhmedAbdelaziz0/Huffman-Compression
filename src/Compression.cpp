@@ -1,6 +1,5 @@
 #include "Compression.hpp"
 #include "HuffmanTree.hpp"
-#include <iostream>
 
 static std::string
 convertToStringOfBits(const std::string &text,
@@ -58,12 +57,11 @@ std::string Compression::compineCodeMap(const std::vector<std::string> &codes) {
 std::vector<std::string>
 Compression::splitCompressedText(const std::string &text) {
   std::vector<std::string> maps(257);
-  int start = 0, end = 0;
+  int start = 0;
   for(int i = 0; i < maps.size() - 1; i++) {
-    end = text.find(';', start);
+    int end = text.find(';', start);
     maps[i] = text.substr(start, end - start);
     start = end + 1;
-    std::cout << end << std::endl;
   }
   maps.back() = text.substr(start);
   return maps;

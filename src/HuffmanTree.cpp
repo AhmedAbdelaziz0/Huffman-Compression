@@ -1,5 +1,4 @@
 #include "HuffmanTree.hpp"
-#include <iostream>
 #include <memory>
 #include <string>
 
@@ -11,9 +10,7 @@ HuffmanTree::HuffLeafNode::HuffLeafNode(int weight, char element) {
 
 const char HuffmanTree::HuffLeafNode::value() const { return element; }
 
-HuffmanTree::HuffInternalNode::HuffInternalNode() {
-  left = nullptr;
-  right = nullptr;
+HuffmanTree::HuffInternalNode::HuffInternalNode() : left(nullptr), right(nullptr) {
 }
 
 void HuffmanTree::HuffInternalNode::Left(
@@ -100,9 +97,7 @@ constructLeaf(std::shared_ptr<HuffmanTree::HuffInternalNode> leafParent, char c,
 std::shared_ptr<HuffmanTree::HuffNode>
 HuffmanTree::buildHuffTree(const std::vector<std::string> &code_map) {
   std::shared_ptr<HuffInternalNode> head(new HuffInternalNode);
-  std::shared_ptr<HuffInternalNode> current = head;
   for (int i = 0; i < 256; i++) {
-    current = head;
     if (hasValue(code_map[i])) {
       auto leafParent = constructPath(head, code_map[i]);
       constructLeaf(leafParent, char(i), code_map[i].back() == '0');
@@ -113,22 +108,22 @@ HuffmanTree::buildHuffTree(const std::vector<std::string> &code_map) {
 
 std::pair<char, int>
 HuffmanTree::findFirst(const std::string &bits,
-                       std::shared_ptr<HuffInternalNode> current, int start) {
+                       std::shared_ptr<HuffInternalNode> head, int start) {
   for (int i = start; i < bits.size(); i++) {
     bool isLeft = bits[i] == '0';
-    current = std::static_pointer_cast<HuffInternalNode>(
-        isLeft ? current->Left() : current->Right());
-    if (current->type == LEAF) {
+    head = std::static_pointer_cast<HuffInternalNode>(
+        isLeft ? head->Left() : head->Right());
+    if (head->type == LEAF) {
       auto leaf = std::static_pointer_cast<HuffLeafNode>(
-          std::static_pointer_cast<HuffNode>(current));
+          std::static_pointer_cast<HuffNode>(head));
       return std::make_pair(leaf->value(), i);
     }
   }
-  return std::make_pair('\n', bits.size());
+  return std::make_pair(EOF, bits.size());
 }
 
 void HuffmanTree::GetPrefixTable(std::shared_ptr<HuffmanTree::HuffNode> tree,
-                                 std::string code,
+                                 const std::string &code,
                                  std::vector<std::string> &codes) {
   if (tree->type == INTERNAL) {
     std::shared_ptr<HuffInternalNode> node =

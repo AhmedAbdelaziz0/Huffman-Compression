@@ -1,7 +1,7 @@
 #include "Compression.hpp"
+#include "FileHandler.hpp"
 #include "ParseArgs.hpp"
 #include "PrefixCode.hpp"
-#include "FileHandler.hpp"
 
 int main(int argc, char **argv) {
   Parser::Arguments arguments = Parser::parseArguments(argc, argv);
@@ -17,11 +17,12 @@ int main(int argc, char **argv) {
   } else {
     std::string compressed_text =
         FileHandler::loadFileAsString(arguments.input_file);
-    std::vector<std::string> code_map = Compression::splitCompressedText(compressed_text);
-
+    std::vector<std::string> code_map =
+        Compression::splitCompressedText(compressed_text);
     compressed_text = code_map.back();
     code_map.pop_back();
-    std::string original_text = Compression::decompress(compressed_text, code_map);
+    std::string original_text =
+        Compression::decompress(compressed_text, code_map);
     FileHandler::saveFile(original_text, arguments.output_file);
   }
 

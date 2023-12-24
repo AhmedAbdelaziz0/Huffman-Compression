@@ -5,17 +5,17 @@
 #include <string>
 
 namespace HuffmanTree {
-enum TYPE { LEAF, INTERNAL };
+enum TYPE { LEAF, INTERNAL, NODE };
 
 class HuffNode {
 public:
-  int weight;
-  TYPE type;
+  int weight = 0;
+  TYPE type = NODE;
 };
 
 class HuffLeafNode : public HuffNode {
 private:
-  char element;
+  char element = '\0';
 
 public:
   HuffLeafNode(int weight, char element);
@@ -64,6 +64,6 @@ std::pair<char, int> findFirst(const std::string &bits,
                                int start);
 
 void GetPrefixTable(std::shared_ptr<HuffmanTree::HuffNode> tree,
-                    std::string code, std::vector<std::string> &codes);
+                    const std::string &code, std::vector<std::string> &codes);
 
 } // namespace HuffmanTree
