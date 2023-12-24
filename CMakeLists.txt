@@ -4,6 +4,14 @@ cmake_minimum_required(VERSION 3.26)
 # Project name and language
 project(HuffmanCompression CXX)
 
+find_program(CMAKE_CXX_CPPCHECK NAMES cppcheck)
+if (CMAKE_CXX_CPPCHECK) 
+  list(APPEND CMAKE_CXX_CPPCHECK "--enable=all")
+  list(APPEND CMAKE_CXX_CPPCHECK "--inconclusive")
+  list(APPEND CMAKE_CXX_CPPCHECK "--force") 
+  list(APPEND CMAKE_CXX_CPPCHECK "--suppress=missingIncludeSystem") 
+endif()
+
 # Set the source directory
 set(SRCDIR src)
 
