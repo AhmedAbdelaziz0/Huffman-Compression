@@ -1,7 +1,7 @@
 #include "PrefixCode.hpp"
 #include "HuffmanTree.hpp"
 
-static std::vector<int> countCharacters(const std::string &str) {
+std::vector<int> PrefixCode::countCharacters(const std::string &str) {
   std::vector<int> counts(256, 0);
   for (const auto &ch : str) {
     counts[ch]++;
@@ -9,7 +9,7 @@ static std::vector<int> countCharacters(const std::string &str) {
   return counts;
 }
 
-static HuffmanTree::PriorityQueue makeQueue(const std::vector<int> &counts) {
+HuffmanTree::PriorityQueue PrefixCode::makeQueue(const std::vector<int> &counts) {
   HuffmanTree::PriorityQueue queue;
   for (int i = 0; i < counts.size(); i++) {
     if (counts[i] > 0) {
