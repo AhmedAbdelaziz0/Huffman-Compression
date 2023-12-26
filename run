@@ -1,5 +1,6 @@
 #!/bin/bash
 
+sed -i "s/set(BINARY $.*/set(BINARY \${BINDIR}\/$1\.cpp)/" ./CMakeLists.txt
 cd build
 cmake ../
 make -j
@@ -7,5 +8,4 @@ cd ..
 echo "
 ----------------------------------------------------
 "
-
-./build/main "$1" "$2" "$3"
+./build/"$1" "$2" "$3" "$4"
