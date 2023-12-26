@@ -119,7 +119,7 @@ HuffmanTree::findFirst(const std::string &bits,
       return std::make_pair(leaf->value(), i);
     }
   }
-  return std::make_pair(EOF, bits.size());
+  return std::make_pair('\0', bits.size());
 }
 
 void HuffmanTree::GetPrefixTable(std::shared_ptr<HuffmanTree::HuffNode> tree,

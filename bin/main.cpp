@@ -9,6 +9,7 @@ int main(int argc, char **argv) {
   if (arguments.isCompress) {
     std::string original_text =
         FileHandler::loadFileAsString(arguments.input_file);
+    original_text += char(1);
     std::vector<std::string> code_map =
         PrefixCode::getCodePrefix(original_text);
     std::string compressed = Compression::compress(original_text, code_map);

@@ -1,22 +1,27 @@
 #include "Compression.hpp"
 #include "HuffmanTree.hpp"
+#include <cstdio>
 
 static std::string
 convertToStringOfBits(const std::string &text,
                                    const std::vector<std::string> &codes) {
-  std::string result = "";
+  std::string result = "\0";
   for (const auto &t : text) {
     result += codes[t];
+  }
+
+  while(result.size() % 8) {
+    result += '0';
   }
   return result;
 }
 
 static std::string convertToStringOfBits(const std::string &text) {
-  std::string result = "";
+  std::string result = "\0";
   for (char c : text) {
-    std::string temp = "";
+    std::string temp = "\0";
     for (int i = 0; i < 8; i++) {
-      temp += (c & 1) + '0';
+      temp += (c & 1) + int('0');
       c >>= 1;
     }
     result += temp;
@@ -34,7 +39,7 @@ static char toChar(const std::string &bits) {
 
 static std::string toBits(const std::string &text_bits) {
   std::string result;
-  for (size_t i = 0; i < text_bits.size() - 8; i += 8) {
+  for (size_t i = 0; i < text_bits.size(); i += 8) {
     result += toChar(text_bits.substr(i, 8));
   }
   return result;
@@ -74,10 +79,12 @@ std::string Compression::decompress(const std::string &text,
   std::string text_bits = convertToStringOfBits(text);
   std::string uncompressed;
   int index = 0;
-  while (index != text_bits.size()) {
-    auto result = HuffmanTree::findFirst(text_bits, tree, index + 1);
+  while (index < text_bits.size()) {
+    auto result = HuffmanTree::findFirst(text_bits, tree, index);
+    if(result.first == char(1))
+       break;
     uncompressed += result.first;
-    index = result.second;
+    index = result.second + 1;
   }
   return uncompressed;
 }
